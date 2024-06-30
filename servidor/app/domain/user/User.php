@@ -41,7 +41,7 @@ class User
 
     public function login(string $password):void
     {
-        if (!is_null($this->getEmailVerifiedAt())){
+        if (is_null($this->getEmailVerifiedAt())){
             throw new EmailNotVerifyException();
         }
 
