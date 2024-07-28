@@ -1,0 +1,97 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: docker/php/DockerFile
+    container_name: barberShop-server-user-laravel
+    restart: always
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./:/var/www
+    environment:
+      - COMPOSER_HOME=/composer
+      - COMPOSER_ALLOW_SUPERUSER=1
+      - APP_ENV=local
+      - APP_KEY=base64:jxZmj1jJa5IRxS89eLzIsDo0y0zowUQCvXOVYMYjMes=
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+    networks:
+      - barberShop-server-user-network  
+
+  nginx:
+    image: nginx:latest
+    container_name: barberShop-server-user-nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - barberShop-server-user-network 
+
+  redis:
+    build:
+      context: ./
+      dockerfile: docker/redis/DockerFile
+    container_name: barberShop-server-user-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    networks:
+      - barberShop-server-user-network 
+
+  db:
+    build:
+      context: ./
+      dockerfile: docker/db/DockerFile
+    container_name: barberShop-server-user-db
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - barberShop-server-user-network 
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: barberShop-server-user-rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - barberShop-server-user-network
+      - rabbitmq-network
+
+
+networks:
+  barberShop-server-user-network:
+    driver: bridge
+
+  rabbitmq-network:
+    external: true
+
+volumes:
+  redis:
+  db:
