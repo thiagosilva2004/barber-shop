@@ -31,13 +31,3 @@ class UserCreatedDispatcherImple implements UserCreatedDispatcher
         }
     }
 }
-
-class UserCreatedHandleItem
-{
-    public function __construct(
-        public UserCreatedHandler $handler,
-        public string $eventName
-    )
-    {
-    }
-}
