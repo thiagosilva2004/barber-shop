@@ -24,43 +24,9 @@ class UserEloquentRepository implements UserRepository
         return $this->modelToUserDomain($userModel);
     }
 
-    private function modelToUserDomain(UserModel $model): User
-    {
-        $created_at = new DateTime($model->created_at);
-        $email_verified_at = is_null($model->email_verified_at) ? null : new DateTime($model->email_verified_at);
-
-        return new User(
-            id: Uuid::create($model->id),
-            name: Name::create($model->name),
-            email: Email::create($model->email),
-            password: Password::create($model->password, $created_at, true),
-            email_verified_at: $email_verified_at,
-            codeVerification: is_null($model->email_code_verification) ? null : CodeVerification::create($model->email_code_verification),
-            created_at: $created_at
-        );
-    }
-
     public function create(User $user): void
     {
         $this->domainToModel($user, true)->save();
-    }
-
-    private function domainToModel(User $user, bool $isNewModel): UserModel
-    {
-        if ($isNewModel) {
-            $userModel = new UserModel();
-            $userModel->id = $user->getId()->getValue();
-        } else {
-            $userModel = UserModel::find($user->getId()->getValue());
-        }
-
-        $userModel->name = $user->getName()->getValue();
-        $userModel->email = $user->getEmail()->getValue();
-        $userModel->password = $user->getPassword()->getValue();
-        $userModel->email_verified_at = $user->getEmailVerifiedAt();
-        $userModel->created_at = $user->getCreatedAt();
-        $userModel->email_code_verification = $user->getCodeVerification()?->getValue();
-        return $userModel;
     }
 
     public function getByEmail(Email $email): User
@@ -81,5 +47,39 @@ class UserEloquentRepository implements UserRepository
     public function existWithEmail(Email $email): bool
     {
         return !is_null(UserModel::where('email', $email->getValue())->value('email'));
+    }
+
+    private function domainToModel(User $user, bool $isNewModel): UserModel
+    {
+        if ($isNewModel) {
+            $userModel = new UserModel();
+            $userModel->id = $user->getId()->getValue();
+        } else {
+            $userModel = UserModel::find($user->getId()->getValue());
+        }
+
+        $userModel->name = $user->getName()->getValue();
+        $userModel->email = $user->getEmail()->getValue();
+        $userModel->password = $user->getPassword()->getValue();
+        $userModel->email_verified_at = $user->getEmailVerifiedAt();
+        $userModel->created_at = $user->getCreatedAt();
+        $userModel->email_code_verification = $user->getCodeVerification()?->getValue();
+        return $userModel;
+    }
+
+    private function modelToUserDomain(UserModel $model): User
+    {
+        $created_at = new DateTime($model->created_at);
+        $email_verified_at = is_null($model->email_verified_at) ? null : new DateTime($model->email_verified_at);
+
+        return new User(
+            id: Uuid::create($model->id),
+            name: Name::create($model->name),
+            email: Email::create($model->email),
+            password: Password::create($model->password, $created_at, true),
+            email_verified_at: $email_verified_at,
+            codeVerification: is_null($model->email_code_verification) ? null : CodeVerification::create($model->email_code_verification),
+            created_at: $created_at
+        );
     }
 }

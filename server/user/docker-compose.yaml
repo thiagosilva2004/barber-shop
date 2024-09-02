@@ -22,7 +22,7 @@ services:
       - redis
       - rabbitmq
     networks:
-      - barberShop-server-user-network  
+      - barberShop-server-user-network
 
   nginx:
     image: nginx:latest
@@ -35,7 +35,7 @@ services:
       - ./:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
     networks:
-      - barberShop-server-user-network 
+      - barberShop-server-user-network
 
   redis:
     build:
@@ -48,7 +48,7 @@ services:
     volumes:
       - redis:/data
     networks:
-      - barberShop-server-user-network 
+      - barberShop-server-user-network
 
   db:
     build:
@@ -65,7 +65,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     networks:
-      - barberShop-server-user-network 
+      - barberShop-server-user-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -78,8 +78,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - "./data:/var/lib/rabbitmq/mnesia/"
     networks:
       - barberShop-server-user-network
       - rabbitmq-network

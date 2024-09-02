@@ -2,7 +2,7 @@
 
 namespace app\domain\user\valueObject\codeVerification;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\TestCase;
 
 class CodeVerificationTest extends TestCase
 {

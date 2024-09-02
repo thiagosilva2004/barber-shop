@@ -12,7 +12,7 @@ use app\domain\user\valueObject\name\Name;
 use app\domain\user\valueObject\password\Password;
 use app\domain\user\valueObject\uuid\Uuid;
 use DateTime;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\TestCase;
 
 class UserTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 namespace app\domain\user\valueObject\name;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\TestCase;
 
 class NameTest extends TestCase
 {

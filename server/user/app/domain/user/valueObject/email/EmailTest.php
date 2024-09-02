@@ -2,7 +2,7 @@
 
 namespace app\domain\user\valueObject\email;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\TestCase;
 
 class EmailTest extends TestCase
 {
