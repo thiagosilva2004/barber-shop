@@ -19,8 +19,10 @@ class EmailUserWelcomeWithMessageBroker implements EmailUserWelcome
     {
         $message = [
             "type" => "USER_EMAIL_WELCOME",
-            "name" => $name,
-            "email" => $email
+            "data" => [
+                "name" => $name,
+                "email" => $email
+            ]
         ];
         $this->messageBroker->publish($message,Queue::EMAIL, RoutingKey::EMAIL);
     }

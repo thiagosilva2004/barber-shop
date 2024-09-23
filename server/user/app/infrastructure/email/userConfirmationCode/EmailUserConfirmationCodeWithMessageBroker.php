@@ -19,9 +19,11 @@ class EmailUserConfirmationCodeWithMessageBroker implements EmailUserConfirmatio
     {
         $message = [
             "type" => "USER_EMAIL_CONFIRMATION_CODE",
-            "name" => $name,
-            "email" => $email,
-            "code" => $code
+            "data" => [
+                "name" => $name,
+                "email" => $email,
+                "code" => $code
+            ]
         ];
         $this->messageBroker->publish($message,Queue::EMAIL, RoutingKey::EMAIL);
     }
