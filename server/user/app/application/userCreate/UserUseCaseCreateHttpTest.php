@@ -19,7 +19,7 @@ class UserUseCaseCreateHttpTest extends TestCase
             'password' => 'Teste#123'
             ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     public function testShouldReturningValidUuidWhenUserCreate():void
