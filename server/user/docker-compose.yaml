@@ -15,8 +15,8 @@ services:
     environment:
       - COMPOSER_HOME=/composer
       - COMPOSER_ALLOW_SUPERUSER=1
-      - APP_ENV=local
-      - APP_KEY=base64:jxZmj1jJa5IRxS89eLzIsDo0y0zowUQCvXOVYMYjMes=
+      - APP_ENV=${APP_ENV}
+      - APP_KEY=${APP_KEY}
     depends_on:
       - db
       - redis
@@ -57,9 +57,9 @@ services:
     container_name: barberShop-server-user-db
     restart: always
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -72,8 +72,8 @@ services:
     container_name: barberShop-server-user-rabbitmq
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -82,7 +82,6 @@ services:
     networks:
       - barberShop-server-user-network
       - rabbitmq-network
-
 
 networks:
   barberShop-server-user-network:
