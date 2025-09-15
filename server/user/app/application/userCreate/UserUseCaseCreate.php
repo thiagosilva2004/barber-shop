@@ -45,6 +45,10 @@ class UserUseCaseCreate
         $this->repository->create($user);
         $this->eventDispatcher->notify($user);
 
-        return new UserUseCaseCreateDtoOutput(user_id: $user->getId()->getValue());
+        return new UserUseCaseCreateDtoOutput(
+            user_id: $user->getId()->getValue(),
+            name: $user->getName()->getValue(),
+            email: $user->getEmail()->getValue()
+        );
     }
 }

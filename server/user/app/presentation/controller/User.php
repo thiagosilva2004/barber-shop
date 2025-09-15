@@ -35,7 +35,13 @@ class User
             password: $request->string('password')->value()
         );
         $output = $this->useCaseCreate->execute($input);
-        return response()->json(['user_id' => $output->user_id],201);
+        return response()->json(
+            [
+                'user_id' => $output->user_id,
+                'name' => $output->name,
+                'email' => $output->email
+            ],
+            201);
     }
 
     public function verifyEmail(Request $request): void
